@@ -99,8 +99,8 @@ def train_multiple_models(X_train, y_train):
     plt.xticks(rotation=45, ha='right')
     plt.ylim([min(mean_accuracies) - 0.05, 1.0])
     plt.tight_layout()
-    plt.savefig('../data/model_comparison.png', dpi=300, bbox_inches='tight')
-    print("\nModel comparison plot saved to '../data/model_comparison.png'")
+    plt.savefig('data/model_comparison.png', dpi=300, bbox_inches='tight')
+    print("\nModel comparison plot saved to 'data/model_comparison.png'")
     plt.close()
     
     # Find best model
@@ -158,9 +158,9 @@ def evaluate_model(model, X_train, X_test, y_train, y_test, model_name):
     plt.ylabel('True Label', fontsize=12)
     plt.xlabel('Predicted Label', fontsize=12)
     plt.tight_layout()
-    plt.savefig(f'../data/confusion_matrix_{model_name.replace(" ", "_").lower()}.png', 
+    plt.savefig(f'data/confusion_matrix_{model_name.replace(" ", "_").lower()}.png', 
                 dpi=300, bbox_inches='tight')
-    print(f"\nConfusion matrix saved to '../data/confusion_matrix_{model_name.replace(' ', '_').lower()}.png'")
+    print(f"\nConfusion matrix saved to 'data/confusion_matrix_{model_name.replace(' ', '_').lower()}.png'")
     plt.close()
     
     # ROC Curve
@@ -177,9 +177,9 @@ def evaluate_model(model, X_train, X_test, y_train, y_test, model_name):
         plt.legend(loc="lower right")
         plt.grid(alpha=0.3)
         plt.tight_layout()
-        plt.savefig(f'../data/roc_curve_{model_name.replace(" ", "_").lower()}.png', 
+        plt.savefig(f'data/roc_curve_{model_name.replace(" ", "_").lower()}.png', 
                     dpi=300, bbox_inches='tight')
-        print(f"ROC curve saved to '../data/roc_curve_{model_name.replace(' ', '_').lower()}.png'")
+        print(f"ROC curve saved to 'data/roc_curve_{model_name.replace(' ', '_').lower()}.png'")
         plt.close()
     
     return model, accuracy, precision, recall, f1
@@ -289,9 +289,9 @@ def save_model_info(model_name, params, metrics, filepath):
 def main():
     """Main function to execute model training pipeline"""
     # Define file paths
-    input_file = "../data/women_risk_processed.csv"
-    model_file = "../models/women_risk_model.pkl"
-    model_info_file = "../models/model_info.txt"
+    input_file = "data/women_risk_processed.csv"
+    model_file = "models/women_risk_model.pkl"
+    model_info_file = "models/model_info.txt"
     
     # Step 1: Load processed data
     data = load_processed_data(input_file)

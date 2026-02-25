@@ -42,8 +42,8 @@ def correlation_analysis(data, target_col='risk'):
                     fmt='.2f', square=True, linewidths=1)
         plt.title('Feature Correlation Heatmap', fontsize=16, fontweight='bold')
         plt.tight_layout()
-        plt.savefig('../data/correlation_heatmap.png', dpi=300, bbox_inches='tight')
-        print("\nCorrelation heatmap saved to '../data/correlation_heatmap.png'")
+        plt.savefig('data/correlation_heatmap.png', dpi=300, bbox_inches='tight')
+        print("\nCorrelation heatmap saved to 'data/correlation_heatmap.png'")
         plt.close()
         
         # Bar plot of correlations with target
@@ -53,8 +53,8 @@ def correlation_analysis(data, target_col='risk'):
         plt.title(f'Feature Correlation with {target_col}', fontsize=14, fontweight='bold')
         plt.xlabel('Correlation Coefficient')
         plt.tight_layout()
-        plt.savefig('../data/target_correlation.png', dpi=300, bbox_inches='tight')
-        print("Target correlation plot saved to '../data/target_correlation.png'")
+        plt.savefig('data/target_correlation.png', dpi=300, bbox_inches='tight')
+        print("Target correlation plot saved to 'data/target_correlation.png'")
         plt.close()
     else:
         print(f"\nWarning: Target column '{target_col}' not found in dataset!")
@@ -69,6 +69,21 @@ def create_new_features(data):
     print("=" * 60)
     
     initial_features = data.shape[1]
+    
+    # Create binary risk target variable from the last column
+    # The last column should be the encoded risk level
+    last_col = data.columns[-1]
+    print(f"\nCreating binary 'risk' target from column: '{last_col}'")
+    print(f"Unique values: {sorted(data[last_col].unique())}")
+    
+    # Create binary risk: 1 for high/moderate risk, 0 for low/no risk
+    # Adjust threshold based on encoded values (usually median or specific value)
+    median_value = data[last_col].median()
+    data['risk'] = (data[last_col] >= median_value).astype(int)
+    
+    print(f"Binary risk distribution:")
+    print(data['risk'].value_counts())
+    print(f"Risk percentage: {(data['risk'].sum() / len(data) * 100):.2f}%")
     
     # Example: Create interaction features if columns exist
     # You can customize this based on your actual dataset columns
@@ -110,8 +125,8 @@ def scale_numeric_features(data, target_col='risk'):
         data_scaled[numeric_cols] = scaler.fit_transform(data[numeric_cols])
         
         # Save the scaler
-        joblib.dump(scaler, '../models/scaler.pkl')
-        print("\nScaler saved to '../models/scaler.pkl'")
+        joblib.dump(scaler, 'models/scaler.pkl')
+        print("\nScaler saved to 'models/scaler.pkl'")
         
         # Show before and after statistics
         print("\n--- Statistics Before Scaling ---")
@@ -161,8 +176,8 @@ def save_processed_data(data, filepath):
 def main():
     """Main function to execute feature engineering pipeline"""
     # Define file paths
-    input_file = "../data/women_risk_cleaned.csv"
-    output_file = "../data/women_risk_processed.csv"
+    input_file = "data/women_risk_cleaned.csv"
+    output_file = "data/women_risk_processed.csv"
     
     # Step 1: Load cleaned data
     data = load_cleaned_data(input_file)
