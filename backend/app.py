@@ -98,8 +98,19 @@ def predict():
         # Apply label encoding if encoders are available
         if label_encoders:
             for col, encoder in label_encoders.items():
+                # Skip Timestamp column as it's not used for prediction
+                if col == 'Timestamp':
+                    continue
+                    
                 if col in df.columns:
                     try:
+                        # Check if value is in the encoder's classes
+                        value = df[col].iloc[0]
+                        if value not in encoder.classes_:
+                            return jsonify({
+                                "error": f"Invalid value for '{col}': {value}. Expected one of: {list(encoder.classes_)}",
+                                "status": "error"
+                            }), 400
                         df[col] = encoder.transform(df[col])
                     except ValueError as e:
                         return jsonify({
