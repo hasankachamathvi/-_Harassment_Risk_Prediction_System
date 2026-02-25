@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Women Risk Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        
+        .info-box h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .info-box p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .endpoints {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .endpoints h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .endpoint {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 3px solid #764ba2;
+        }
+        
+        .endpoint .method {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        
+        .endpoint .method.get {
+            background: #28a745;
+        }
+        
+        .endpoint .method.post {
+            background: #007bff;
+        }
+        
+        .endpoint .path {
+            color: #333;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .endpoint .description {
+            color: #666;
+            margin-top: 5px;
+            font-size: 0.95em;
+        }
+        
+        .example {
+            background: #2d3748;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        
+        .example h3 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        
+        .example pre {
+            background: #1a202c;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        .example code {
+            color: #68d391;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            color: #666;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Women Risk Predictor</h1>
+        <p class="subtitle">Machine Learning API for Harassment Risk Assessment</p>
+        
+        <div class="info-box">
+            <h2>Welcome!</h2>
+            <p>This API uses machine learning to predict harassment risk levels based on various factors such as location, time of day, and past incidents.</p>
+            <div style="text-align: center;">
+                <span class="status-badge">🟢 API Running</span>
+            </div>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="/dashboard" style="display: inline-block; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 12px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; transition: all 0.3s;">
+                    🎯 Open Interactive Dashboard
+                </a>
+            </div>
+        </div>
+        
+        <div class="endpoints">
+            <h3>📡 Available Endpoints</h3>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/health</span>
+                <div class="description">Check API health status</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/model_info</span>
+                <div class="description">Get information about the trained model</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="path">/predict</span>
+                <div class="description">Predict risk for a single record (JSON input)</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="path">/predict_batch</span>
+                <div class="description">Predict risk for multiple records (JSON array input)</div>
+            </div>
+        </div>
+        
+        <div class="example">
+            <h3>💻 Example Usage (POST /predict)</h3>
+            <pre><code>{
+  "age": 25,
+  "occupation": "Student",
+  "location": "Urban",
+  "time_of_day": "Night",
+  "public_transport_usage": 1,
+  "past_incidents": 2
+}</code></pre>
+            
+            <h3 style="margin-top: 20px;">📤 Example Response</h3>
+            <pre><code>{
+  "risk": 1,
+  "risk_label": "High Risk",
+  "probability": 0.8542,
+  "message": "High risk detected. Please be cautious...",
+  "status": "success"
+}</code></pre>
+        </div>
+        
+        <div class="example" style="margin-top: 10px;">
+            <h3>🔧 cURL Example</h3>
+            <pre><code>curl -X POST http://127.0.0.1:5000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"age": 25, "occupation": "Student", ...}'</code></pre>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Women Risk Predictor API</strong></p>
+            <p>Built with Flask & Scikit-learn</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">⚠️ Note: This is a prototype system. Always prioritize personal safety.</p>
+        </div>
+    </div>
+</body>
+</html>
