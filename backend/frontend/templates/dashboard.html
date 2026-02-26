@@ -299,6 +299,100 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        /* Upload Section Styles */
+        .upload-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .upload-area {
+            border: 2px dashed #e91e63;
+            border-radius: 10px;
+            padding: 60px 40px;
+            background-color: #fce4ec;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            background-color: #f8bbd0;
+            border-color: #c2185b;
+        }
+        
+        .upload-area.dragover {
+            background-color: #f8bbd0;
+            border-color: #c2185b;
+            transform: scale(1.02);
+        }
+        
+        .upload-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .upload-text {
+            font-size: 18px;
+            color: #e91e63;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .upload-hint {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        #file-input {
+            display: none;
+        }
+        
+        .file-selected {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-radius: 5px;
+            color: #2e7d32;
+            font-weight: 500;
+        }
+        
+        .upload-btn {
+            margin-top: 20px;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #e91e63, #c2185b);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background: linear-gradient(135deg, #c2185b, #ad1457);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(233, 30, 99, 0.3);
+        }
+        
+        .upload-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -310,8 +404,9 @@
             </svg>
             යුවති
         </div>
-        <div class="nav-item active">🏠 Dashboard</div>
-        <div class="nav-item">📋 Questionnaire</div>
+        <div class="nav-item active" onclick="showSection('dashboard')">🏠 Dashboard</div>
+        <div class="nav-item" onclick="showSection('questionnaire')">📋 Questionnaire</div>
+        <div class="nav-item" onclick="showSection('upload')">📤 Upload Data</div>
         <div class="nav-item">📊 Reports</div>
         <div class="nav-item">📈 Statistics</div>
     </div>
@@ -322,40 +417,45 @@
             <h1>යුවති - Harassment Risk Prediction System</h1>
         </div>
         
-        <!-- Statistics Cards -->
-        <div class="stats-container">
-            <div class="stat-card">
-                <div class="stat-number purple" id="total-responses">0</div>
-                <div class="stat-label">Total Responses</div>
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="section active">
+            <!-- Statistics Cards -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number purple" id="total-responses">0</div>
+                    <div class="stat-label">Total Responses</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number green" id="no-risk">0</div>
+                    <div class="stat-label">No Risk</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number blue" id="low-risk">0</div>
+                    <div class="stat-label">Low Risk</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number orange" id="medium-risk">0</div>
+                    <div class="stat-label">Medium Risk</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number red" id="high-risk">0</div>
+                    <div class="stat-label">High Risk Cases</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number green" id="no-risk">0</div>
-                <div class="stat-label">No Risk</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number blue" id="low-risk">0</div>
-                <div class="stat-label">Low Risk</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number orange" id="medium-risk">0</div>
-                <div class="stat-label">Medium Risk</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number red" id="high-risk">0</div>
-                <div class="stat-label">High Risk Cases</div>
+            
+            <!-- High Risk Cases Section -->
+            <div class="stats-container" style="margin-bottom: 30px;">
+                <div class="stat-card" style="grid-column: 1 / -1;">
+                    <div class="stat-number red" id="high-risk-cases">0</div>
+                    <div class="stat-label">High Risk Cases</div>
+                </div>
             </div>
         </div>
         
-        <!-- High Risk Cases Section -->
-        <div class="stats-container" style="margin-bottom: 30px;">
-            <div class="stat-card" style="grid-column: 1 / -1;">
-                <div class="stat-number red" id="high-risk-cases">0</div>
-                <div class="stat-label">High Risk Cases</div>
-            </div>
-        </div>
-        
-        <!-- Questionnaire Form -->
-        <div class="form-container">
+        <!-- Questionnaire Section -->
+        <div id="questionnaire-section" class="section">
+            <!-- Questionnaire Form -->
+            <div class="form-container">
             <h2 class="form-title">Risk Assessment Questionnaire</h2>
             <form id="risk-form">
                 <div class="form-group">
@@ -496,6 +596,34 @@
                 <p style="margin-top: 10px; color: #666;">Analyzing data...</p>
             </div>
         </div>
+        </div>
+        
+        <!-- Upload Section -->
+        <div id="upload-section" class="section">
+            <div class="upload-container">
+                <h2 class="form-title">Upload Data File</h2>
+                <p style="color: #666; margin-bottom: 30px;">Upload a CSV file with multiple questionnaire responses for batch prediction</p>
+                
+                <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
+                    <div class="upload-icon">📤</div>
+                    <div class="upload-text">Click to upload or drag and drop</div>
+                    <div class="upload-hint">CSV files only (max 5MB)</div>
+                </div>
+                
+                <input type="file" id="file-input" accept=".csv" onchange="handleFileSelect(event)">
+                
+                <div id="file-selected" class="file-selected" style="display: none;"></div>
+                
+                <button id="upload-submit-btn" class="upload-btn" onclick="uploadFile()" disabled>
+                    Upload and Process
+                </button>
+                
+                <div class="loading" id="upload-loading" style="margin-top: 20px;">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 10px; color: #666;">Processing file...</p>
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- Result Modal -->
@@ -511,6 +639,27 @@
     </div>
     
     <script>
+        let selectedFile = null;
+        
+        // Section navigation
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.add('active');
+            
+            // Add active class to clicked nav item
+            event.target.classList.add('active');
+        }
+        
         // Load statistics on page load
         window.addEventListener('load', function() {
             loadStatistics();
@@ -632,6 +781,106 @@
                 closeModal();
             }
         });
+        
+        // File upload functionality
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
+                    alert('Please select a CSV file');
+                    return;
+                }
+                
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size must be less than 5MB');
+                    return;
+                }
+                
+                selectedFile = file;
+                document.getElementById('file-selected').textContent = `✓ Selected: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+                document.getElementById('file-selected').style.display = 'block';
+                document.getElementById('upload-submit-btn').disabled = false;
+            }
+        }
+        
+        // Drag and drop functionality
+        const uploadArea = document.getElementById('upload-area');
+        
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
+                    selectedFile = file;
+                    document.getElementById('file-selected').textContent = `✓ Selected: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+                    document.getElementById('file-selected').style.display = 'block';
+                    document.getElementById('upload-submit-btn').disabled = false;
+                } else {
+                    alert('Please select a CSV file');
+                }
+            }
+        });
+        
+        function uploadFile() {
+            if (!selectedFile) {
+                alert('Please select a file first');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            
+            // Show loading
+            document.getElementById('upload-loading').classList.add('active');
+            document.getElementById('upload-submit-btn').disabled = true;
+            
+            // Send file to backend
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(result => {
+                // Hide loading
+                document.getElementById('upload-loading').classList.remove('active');
+                
+                if (result.status === 'success') {
+                    alert(`File processed successfully!\nTotal records: ${result.total}\nProcessed: ${result.processed}`);
+                    
+                    // Reset upload form
+                    selectedFile = null;
+                    document.getElementById('file-input').value = '';
+                    document.getElementById('file-selected').style.display = 'none';
+                    
+                    // Reload statistics
+                    loadStatistics();
+                } else {
+                    alert('Error: ' + result.error);
+                    document.getElementById('upload-submit-btn').disabled = false;
+                }
+            })
+            .catch(error => {
+                document.getElementById('upload-loading').classList.remove('active');
+                document.getElementById('upload-submit-btn').disabled = false;
+                alert('Error uploading file: ' + error.message);
+            });
+        }
     </script>
 </body>
 </html>

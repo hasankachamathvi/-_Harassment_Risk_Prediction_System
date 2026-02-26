@@ -8,12 +8,25 @@ import joblib
 import pandas as pd
 import numpy as np
 import os
+from werkzeug.utils import secure_filename
 import warnings
 warnings.filterwarnings('ignore')
 
 app = Flask(__name__, 
             template_folder='../frontend/templates',
             static_folder='../frontend/static')
+
+# Configuration for file uploads
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = {'csv'}
+MAX_FILE_SIZE = 5 * 1024 * 1024  # 5MB
+
+# Create uploads directory if it doesn't exist
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = MAX_FILE_SIZE
 
 # Load the trained model
 MODEL_PATH = "models/women_risk_model.pkl"
@@ -299,6 +312,164 @@ def model_info():
             "status": "error"
         }), 500
 
+def allowed_file(filename):
+    """Check if file extension is allowed"""
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    """
+    Upload and process a CSV file with multiple questionnaire responses
+    
+    Expected CSV columns:
+    - All the questionnaire columns matching the model's expected format
+    
+    Returns:
+    {
+        "status": "success",
+        "total": 100,
+        "processed": 98,
+        "failed": 2,
+        "results": [...]
+    }
+    """
+    try:
+        # Check if file is present in the request
+        if 'file' not in request.files:
+            return jsonify({
+                "error": "No file part in the request",
+                "status": "error"
+            }), 400
+        
+        file = request.files['file']
+        
+        # Check if file was selected
+        if file.filename == '':
+            return jsonify({
+                "error": "No file selected",
+                "status": "error"
+            }), 400
+        
+        # Check if file is allowed
+        if not allowed_file(file.filename):
+            return jsonify({
+                "error": "Only CSV files are allowed",
+                "status": "error"
+            }), 400
+        
+        # Save the file temporarily
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+        
+        try:
+            # Read the CSV file
+            df = pd.read_csv(filepath)
+            total_records = len(df)
+            
+            if total_records == 0:
+                return jsonify({
+                    "error": "CSV file is empty",
+                    "status": "error"
+                }), 400
+            
+            # Process each record
+            results = []
+            processed = 0
+            failed = 0
+            
+            for idx, row in df.iterrows():
+                try:
+                    # Convert row to dictionary
+                    data = row.to_dict()
+                    
+                    # Create a single-row DataFrame for prediction
+                    pred_df = pd.DataFrame([data])
+                    
+                    # Apply label encoding if encoders are available
+                    if label_encoders:
+                        for col, encoder in label_encoders.items():
+                            if col == 'Timestamp':
+                                continue
+                            if col in pred_df.columns:
+                                value = pred_df[col].iloc[0]
+                                if pd.notna(value) and value in encoder.classes_:
+                                    pred_df[col] = encoder.transform([value])
+                                else:
+                                    # Skip invalid values
+                                    raise ValueError(f"Invalid value for column '{col}': {value}")
+                    
+                    # Apply scaling if scaler is available
+                    if scaler:
+                        pred_df = pd.DataFrame(scaler.transform(pred_df), columns=pred_df.columns)
+                    
+                    # Make prediction
+                    prediction = model.predict(pred_df)[0]
+                    
+                    # Get probability if available
+                    probability = None
+                    if hasattr(model, 'predict_proba'):
+                        probability = float(model.predict_proba(pred_df)[0][1])
+                    
+                    # Determine risk label
+                    if prediction == 1:
+                        if probability and probability > 0.8:
+                            risk_label = "Very High Risk"
+                        elif probability and probability > 0.6:
+                            risk_label = "High Risk"
+                        else:
+                            risk_label = "Medium Risk"
+                    else:
+                        if probability and probability < 0.2:
+                            risk_label = "No Risk"
+                        elif probability and probability < 0.4:
+                            risk_label = "Low Risk"
+                        else:
+                            risk_label = "Low-Medium Risk"
+                    
+                    results.append({
+                        "row": idx + 1,
+                        "risk": int(prediction),
+                        "risk_label": risk_label,
+                        "probability": round(probability, 4) if probability else None
+                    })
+                    
+                    processed += 1
+                    
+                except Exception as e:
+                    results.append({
+                        "row": idx + 1,
+                        "error": str(e)
+                    })
+                    failed += 1
+            
+            # Clean up - remove the uploaded file
+            if os.path.exists(filepath):
+                os.remove(filepath)
+            
+            return jsonify({
+                "status": "success",
+                "total": total_records,
+                "processed": processed,
+                "failed": failed,
+                "results": results[:100]  # Return first 100 results
+            }), 200
+            
+        except Exception as e:
+            # Clean up on error
+            if os.path.exists(filepath):
+                os.remove(filepath)
+            return jsonify({
+                "error": f"Error processing CSV file: {str(e)}",
+                "status": "error"
+            }), 500
+    
+    except Exception as e:
+        return jsonify({
+            "error": f"Upload failed: {str(e)}",
+            "status": "error"
+        }), 500
+
 @app.route('/api/statistics', methods=['GET'])
 def get_statistics():
     """Get statistics from stored predictions"""
@@ -404,6 +575,7 @@ if __name__ == "__main__":
     print("  GET  /dashboard     - Interactive dashboard")
     print("  POST /predict       - Single prediction")
     print("  POST /predict_batch - Batch prediction")
+    print("  POST /upload        - Upload CSV file for batch prediction")
     print("  GET  /api/statistics- Get statistics")
     print("  GET  /model_info    - Model information")
     print("  GET  /health        - Health check")
