@@ -2,8 +2,8 @@
 WOMEN RISK PREDICTION MODEL INFORMATION
 ============================================================
 
-Model: Decision Tree
-Training Date: 2026-02-25 15:29:39
+Model: Random Forest
+Training Date: 2026-02-26 14:50:54
 
 ------------------------------------------------------------
 Dataset Information:
@@ -11,21 +11,21 @@ Dataset Information:
 Total Samples: 115
 Training Samples: 92
 Testing Samples: 23
-Number of Features: 13
+Number of Features: 12
 
 ------------------------------------------------------------
 Best Hyperparameters:
 ------------------------------------------------------------
-criterion: gini
 max_depth: None
 min_samples_leaf: 1
 min_samples_split: 2
+n_estimators: 100
 
 ------------------------------------------------------------
 Performance Metrics (Test Set):
 ------------------------------------------------------------
-Accuracy:  1.0000
+Accuracy:  0.9130
 Precision: 1.0000
-Recall:    1.0000
-F1-Score:  1.0000
-ROC-AUC:   1.0000
+Recall:    0.5000
+F1-Score:  0.6667
+ROC-AUC:   0.9671
