@@ -406,13 +406,15 @@
                         <option value="Student">Student</option>
                         <option value="Employed">Employed</option>
                         <option value="Self-employed">Self-employed</option>
-                        <option value="Umemployed">Unemployed</option>
+                        <option value="Unemployed">Unemployed</option>
                         <option value="Other">Other</option>
                     </select>
                 </div>
                 
+                <!-- Question 3: When the incident occurred -->
                 <div class="form-group">
-                                <!-- Question 3: When the incident occurred -->                    <select name="time_of_day" required>
+                    <label>3. Time of Incident</label>
+                    <select name="time_of_day" required>
                         <option value="">Select Time</option>
                         <option value="Early Morning">Early Morning</option>
                         <option value="Morning">Morning</option>
@@ -422,8 +424,10 @@
                     </select>
                 </div>
                 
+                <!-- Question 4: Where the incident occurred -->
                 <div class="form-group">
-                                <!-- Question 4: Where the incident occurred -->                    <select name="location" required>
+                    <label>4. Location</label>
+                    <select name="location" required>
                         <option value="">Select Location</option>
                         <option value="Street/Public place">Street/Public place</option>
                         <option value="Public transport">Public transport</option>
@@ -521,11 +525,11 @@
             <div class="loading" id="loading">
                 <div class="spinner"></div>
                 <p style="margin-top: 10px; color: #666;">Analyzing data...</p>
-            <Analysis & Models Section - ML model informa
+            </div>
+        </div>
         </div>
         
-        <!-- Upload Section -->
-        <!-- Analysis & Models Section -->
+        <!-- Analysis & Models Section - ML model information -->
         <div id="analysis-section" class="section">
             <div class="form-container">
                 <h2 class="form-title">Model Training & Analysis</h2>
@@ -725,13 +729,13 @@
             document.getElementById('loading').classList.add('active');
             document.querySelector('.submit-btn').style.display = 'none';
             
-            // Get form data
-            const formData = new FormData(this);
-            const data = {}; and prepare for API
+            // Get form data and prepare for API
             const formData = new FormData(this);
             const data = {};
             
-            // Map form fields to API format with full question texn?'] = formData.get('occupation');
+            // Map form fields to API format with full question text
+            data['1. What is your age group?'] = formData.get('age_group');
+            data['2. What is your occupation?'] = formData.get('occupation');
             data['3. At what time of day did the incident occur?'] = formData.get('time_of_day');
             data['4. Where did the incident occur?'] = formData.get('location');
             data['5. How crowded was the location at the time of the incident?'] = formData.get('crowd_level');
@@ -742,8 +746,8 @@
             data['10. How often have you experienced harassment in similar situations?'] = formData.get('frequency');
             data['11. How safe did you feel during the incident?'] = formData.get('safety_feeling');
             
-            // Send to backend
-            fetch('/prediction request to Flaskedict', {
+            // Send prediction request to Flask backend
+            fetch('/predict', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -752,8 +756,8 @@
             })
             .then(response => response.json())
             .then(result => {
-                // Hide loading
-                document.getEle spinner and show submit buttonmentById('loading').classList.remove('active');
+                // Hide loading spinner and show submit button
+                document.getElementById('loading').classList.remove('active');
                 document.querySelector('.submit-btn').style.display = 'block';
                 
                 if (result.status === 'success') {
