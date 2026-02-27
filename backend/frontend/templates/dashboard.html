@@ -667,7 +667,6 @@
             <div class="risk-level" id="risk-result">
                 High Risk
             </div>
-            <p id="risk-message" style="color: #666; line-height: 1.6;"></p>
             <button class="close-btn" onclick="closeModal()">Close</button>
         </div>
     </div>
@@ -784,7 +783,6 @@
         function showResult(result) {
             const modal = document.getElementById('result-modal');
             const riskElement = document.getElementById('risk-result');
-            const messageElement = document.getElementById('risk-message');
             
             // Clear previous classes before applying new ones
             riskElement.className = 'risk-level';
@@ -809,7 +807,6 @@
             
             riskElement.textContent = riskText;
             riskElement.classList.add(riskClass);
-            messageElement.textContent = result.message || 'Risk assessment completed.';
             
             modal.classList.add('active');
         }
