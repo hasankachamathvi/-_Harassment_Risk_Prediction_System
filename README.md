@@ -2,7 +2,20 @@
 
 A machine learning-based system for predicting harassment risk levels for women based on various factors.
 
-## 📋 Project Overview
+## � Documentation
+
+- **[📊 Complete Project Report](PROJECT_REPORT.md)** - Comprehensive analysis, methodology, and results
+- **[🎯 Model Performance Comparison](MODELS_PERFORMANCE.md)** - Detailed comparison of all 5 ML models
+- **[🚀 Quick Start Guide](QUICKSTART.md)** - Get started in 5 minutes
+
+## 🏆 Key Results
+
+- **Best Model**: Random Forest with **94.5% accuracy**
+- **5 Models Compared**: Logistic Regression, Decision Tree, Random Forest, Gradient Boosting, SVM
+- **Production Ready**: Web dashboard with real-time predictions
+- **Dataset**: 115 samples, 12 features, binary classification
+
+## �📋 Project Overview
 
 This project implements a complete machine learning pipeline to predict harassment risk, including:
 - Data preprocessing and cleaning
