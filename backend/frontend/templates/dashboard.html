@@ -5,19 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>යුවති - Harassment Risk Prediction System</title>
     <style>
+        /* Global Reset - Remove default margins and paddings */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
+        /* Main body styling with flex layout */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #fce4ec;
             display: flex;
             min-height: 100vh;
         }
-        
+        - Left navigation panel 
         /* Sidebar Styles */
         .sidebar {
             width: 250px;
@@ -26,6 +28,7 @@
             box-shadow: 2px 0 5px rgba(0,0,0,0.1);
         }
         
+        /* Logo styling with icon and text */
         .logo {
             display: flex;
             align-items: center;
@@ -42,6 +45,7 @@
             fill: #e91e63;
         }
         
+        /* Navigation menu item styling */
         .nav-item {
             padding: 12px 15px;
             margin-bottom: 5px;
@@ -68,6 +72,7 @@
             padding: 30px;
             overflow-y: auto;
         }
+        /* Page header with pink background */
         
         .header {
             background-color: #f8bbd0;
@@ -81,7 +86,7 @@
             font-size: 24px;
         }
         
-        /* Statistics Cards */
+        /* Statistics Cards - Dashboard metrics display */
         .stats-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -96,12 +101,14 @@
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
+        /* Large number display in stat cards */
         
         .stat-number {
             font-size: 48px;
             font-weight: bold;
             margin-bottom: 10px;
         }
+        /* Color coding for different risk levels */
         
         .stat-number.red { color: #f44336; }
         .stat-number.green { color: #4caf50; }
@@ -114,12 +121,13 @@
             font-size: 14px;
         }
         
-        /* Questionnaire Form */
+        /* Questionnaire Form - Main form container styling */
         .form-container {
             background-color: #fff;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        /* Form title styling */
         }
         
         .form-title {
@@ -128,6 +136,7 @@
             margin-bottom: 30px;
             text-align: center;
             font-weight: bold;
+        /* Individual form field container */
         }
         
         .form-group {
@@ -160,6 +169,7 @@
         
         .form-group select option {
             padding: 10px;
+        /* Submit button with gradient background */
         }
         
         .submit-btn {
@@ -186,7 +196,7 @@
             transform: translateY(0);
         }
         
-        /* Result Modal */
+        /* Result Modal - Popup for displaying prediction results */
         .modal {
             display: none;
             position: fixed;
@@ -215,6 +225,7 @@
             animation: slideIn 0.3s ease-out;
         }
         
+        /* Animation for modal entrance */
         @keyframes slideIn {
             from {
                 transform: translateY(-50px);
@@ -228,6 +239,7 @@
         
         .modal-content h2 {
             margin-bottom: 20px;
+        /* Risk level display in modal */
             color: #333;
         }
         
@@ -236,6 +248,7 @@
             font-weight: bold;
             padding: 20px;
             border-radius: 10px;
+        /* Color coding for different risk levels in modal */
             margin: 20px 0;
         }
         
@@ -256,6 +269,7 @@
         
         .risk-level.high-risk {
             background-color: #ffebee;
+        /* Modal close button */
             color: #c62828;
         }
         
@@ -274,6 +288,7 @@
         .close-btn:hover {
             background-color: #c2185b;
         }
+        /* Loading spinner styles */
         
         .loading {
             display: none;
@@ -293,10 +308,12 @@
             height: 40px;
             animation: spin 1s linear infinite;
             margin: 0 auto;
+        /* Spinner rotation animation */
         }
         
         @keyframes spin {
             0% { transform: rotate(0deg); }
+        /* Section visibility toggle */
             100% { transform: rotate(360deg); }
         }
         
@@ -322,11 +339,12 @@
         <div class="nav-item" onclick="showSection('questionnaire')">📋 Questionnaire</div>
         <div class="nav-item" onclick="showSection('analysis')">🔬 Analysis & Models</div>
         <div class="nav-item" onclick="showSection('reports')">📊 Reports</div>
-    </div>
-    
-    <!-- Main Content -->
-    <div class="main-content">
+    </div!-- Page header with title -->
         <div class="header">
+            <h1>යුවති - Harassment Risk Prediction System</h1>
+        </div>
+        
+        <!-- Dashboard Section - Main statistics overview
             <h1>යුවති - Harassment Risk Prediction System</h1>
         </div>
         
@@ -361,13 +379,12 @@
                 <div class="stat-card" style="grid-column: 1 / -1;">
                     <div class="stat-number red" id="high-risk-cases">0</div>
                     <div class="stat-label">High Risk Cases</div>
-                </div>
-            </div>
-        </div>
+                </div> Risk assessment form -->
+        <div id="questionnaire-section" class="section">
+            <!-- Questionnaire Form - User input for prediction
         
         <!-- Questionnaire Section -->
-        <div id="questionnaire-section" class="section">
-            <!-- Questionnaire Form -->
+        <div id="questionnaire-se                <!-- Question 1: Age demographic -->            <!-- Questionnaire Form -->
             <div class="form-container">
             <h2 class="form-title">Risk Assessment Questionnaire</h2>
             <form id="risk-form">
@@ -381,8 +398,7 @@
                         <option value="46-55">46-55</option>
                         <option value="56+">56+</option>
                     </select>
-                </div>
-                
+                                <!-- Question 2: Employment status -->                
                 <div class="form-group">
                     <label>2. Occupation</label>
                     <select name="occupation" required>
@@ -396,8 +412,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>3. Time of Incident</label>
-                    <select name="time_of_day" required>
+                                <!-- Question 3: When the incident occurred -->                    <select name="time_of_day" required>
                         <option value="">Select Time</option>
                         <option value="Early Morning">Early Morning</option>
                         <option value="Morning">Morning</option>
@@ -408,8 +423,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>4. Location</label>
-                    <select name="location" required>
+                                <!-- Question 4: Where the incident occurred -->                    <select name="location" required>
                         <option value="">Select Location</option>
                         <option value="Street/Public place">Street/Public place</option>
                         <option value="Public transport">Public transport</option>
@@ -507,8 +521,7 @@
             <div class="loading" id="loading">
                 <div class="spinner"></div>
                 <p style="margin-top: 10px; color: #666;">Analyzing data...</p>
-            </div>
-        </div>
+            <Analysis & Models Section - ML model informa
         </div>
         
         <!-- Upload Section -->
@@ -544,7 +557,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> Analytics and charts -
 
         <!-- Reports Section -->
         <div id="reports-section" class="section">
@@ -652,7 +665,7 @@
     
     <!-- Chart.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    
+     - Handles switching between dashboard sections
     <script>
         // Section navigation
         let chartsInitialized = false;
@@ -679,13 +692,13 @@
                 chartsInitialized = true;
             }
         }
-        
+         - Initialize dashboard data
         // Load statistics on page load
         window.addEventListener('load', function() {
             loadStatistics();
         });
         
-        // Load statistics from backend
+        // Load statistics from backend - Fetch and display metrics
         function loadStatistics() {
             fetch('/api/statistics')
                 .then(response => response.json())
@@ -704,7 +717,7 @@
                 });
         }
         
-        // Handle form submission
+        // Handle form submission - Process questionnaire and get prediction
         document.getElementById('risk-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -714,11 +727,11 @@
             
             // Get form data
             const formData = new FormData(this);
+            const data = {}; and prepare for API
+            const formData = new FormData(this);
             const data = {};
             
-            // Map form fields to API format
-            data['1. What is your age group?'] = formData.get('age_group');
-            data['2. What is your occupation?'] = formData.get('occupation');
+            // Map form fields to API format with full question texn?'] = formData.get('occupation');
             data['3. At what time of day did the incident occur?'] = formData.get('time_of_day');
             data['4. Where did the incident occur?'] = formData.get('location');
             data['5. How crowded was the location at the time of the incident?'] = formData.get('crowd_level');
@@ -730,7 +743,7 @@
             data['11. How safe did you feel during the incident?'] = formData.get('safety_feeling');
             
             // Send to backend
-            fetch('/predict', {
+            fetch('/prediction request to Flaskedict', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -740,12 +753,12 @@
             .then(response => response.json())
             .then(result => {
                 // Hide loading
-                document.getElementById('loading').classList.remove('active');
+                document.getEle spinner and show submit buttonmentById('loading').classList.remove('active');
                 document.querySelector('.submit-btn').style.display = 'block';
                 
                 if (result.status === 'success') {
                     showResult(result);
-                    // Reload statistics
+                    // Reload statistics to update dashboard
                     setTimeout(loadStatistics, 500);
                 } else {
                     alert('Error: ' + result.error);
@@ -759,14 +772,15 @@
         });
         
         function showResult(result) {
+        // Display prediction result in modal - Show risk level to user
             const modal = document.getElementById('result-modal');
             const riskElement = document.getElementById('risk-result');
             const messageElement = document.getElementById('risk-message');
             
-            // Clear previous classes
+            // Clear previous classes before applying new ones
             riskElement.className = 'risk-level';
             
-            // Determine risk level and styling
+            // Determine risk level and apply appropriate styling
             let riskText = '';
             let riskClass = '';
             
@@ -791,18 +805,19 @@
             modal.classList.add('active');
         }
         
+        // Close result modal
         function closeModal() {
             document.getElementById('result-modal').classList.remove('active');
         }
         
-        // Close modal when clicking outside
+        // Close modal when clicking outside the modal content
         document.getElementById('result-modal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
             }
         });
-
-        // Initialize Report Charts
+ - Create visualizations for analytics
+        // InitRisk by Location Chart - Bar chart showing risk levels by location
         function initReportCharts() {
             // 2. Risk by Location Chart
             new Chart(document.getElementById('riskByLocationChart'), {
@@ -821,7 +836,7 @@
                         y: { beginAtZero: true, max: 100 }
                     }
                 }
-            });
+            });Harassment Type Chart - Horizontal bar chart of harassment types
 
             // 5. Harassment Type Chart
             new Chart(document.getElementById('harassmentTypeChart'), {
@@ -841,7 +856,7 @@
                         x: { beginAtZero: true }
                     }
                 }
-            });
+            });Model Accuracy Comparison Chart - Compare ML model performance
 
             // 7. Model Accuracy Comparison Chart
             new Chart(document.getElementById('modelAccuracyChart'), {
@@ -860,7 +875,7 @@
                         y: { beginAtZero: true, max: 100 }
                     }
                 }
-            });
+            }); - Populate list of dangerous locations
 
             // High-Risk Areas
             document.getElementById('highRiskAreas').innerHTML = `
@@ -869,7 +884,7 @@
                 <li style="padding: 8px 0; border-bottom: 1px solid #ffcdd2;">📍 Isolated Areas (Risk: 90%)</li>
                 <li style="padding: 8px 0; border-bottom: 1px solid #ffcdd2;">📍 Late Night Markets (Risk: 72%)</li>
                 <li style="padding: 8px 0;">📍 Empty Parking Lots (Risk: 88%)</li>
-            `;
+            `; - Populate list of high-risk time periods
 
             // Peak Risk Times
             document.getElementById('peakRiskTimes').innerHTML = `
