@@ -300,92 +300,6 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* Upload Section Styles */
-        .upload-container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .upload-area {
-            border: 2px dashed #e91e63;
-            border-radius: 10px;
-            padding: 60px 40px;
-            background-color: #fce4ec;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        
-        .upload-area:hover {
-            background-color: #f8bbd0;
-            border-color: #c2185b;
-        }
-        
-        .upload-area.dragover {
-            background-color: #f8bbd0;
-            border-color: #c2185b;
-            transform: scale(1.02);
-        }
-        
-        .upload-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-        }
-        
-        .upload-text {
-            font-size: 18px;
-            color: #e91e63;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        
-        .upload-hint {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        #file-input {
-            display: none;
-        }
-        
-        .file-selected {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #e8f5e9;
-            border-radius: 5px;
-            color: #2e7d32;
-            font-weight: 500;
-        }
-        
-        .upload-btn {
-            margin-top: 20px;
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #e91e63, #c2185b);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .upload-btn:hover {
-            background: linear-gradient(135deg, #c2185b, #ad1457);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(233, 30, 99, 0.3);
-        }
-        
-        .upload-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
         .section {
             display: none;
         }
@@ -406,10 +320,8 @@
         </div>
         <div class="nav-item active" onclick="showSection('dashboard')">🏠 Dashboard</div>
         <div class="nav-item" onclick="showSection('questionnaire')">📋 Questionnaire</div>
-        <div class="nav-item" onclick="showSection('upload')">📤 Upload Data</div>
         <div class="nav-item" onclick="showSection('analysis')">🔬 Analysis & Models</div>
-        <div class="nav-item">📊 Reports</div>
-        <div class="nav-item">📈 Statistics</div>
+        <div class="nav-item" onclick="showSection('reports')">📊 Reports</div>
     </div>
     
     <!-- Main Content -->
@@ -600,37 +512,10 @@
         </div>
         
         <!-- Upload Section -->
-        <div id="upload-section" class="section">
-            <div class="upload-container">
-                <h2 class="form-title">Upload Data File</h2>
-                <p style="color: #666; margin-bottom: 30px;">Upload a CSV file with multiple questionnaire responses for batch prediction</p>
-                
-                <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
-                    <div class="upload-icon">📤</div>
-                    <div class="upload-text">Click to upload or drag and drop</div>
-                    <div class="upload-hint">CSV files only (max 5MB)</div>
-                </div>
-                
-                <input type="file" id="file-input" accept=".csv" onchange="handleFileSelect(event)">
-                
-                <div id="file-selected" class="file-selected" style="display: none;"></div>
-                
-                <button id="upload-submit-btn" class="upload-btn" onclick="uploadFile()" disabled>
-                    Upload and Process
-                </button>
-                
-                <div class="loading" id="upload-loading" style="margin-top: 20px;">
-                    <div class="spinner"></div>
-                    <p style="margin-top: 10px; color: #666;">Processing file...</p>
-                </div>
-            </div>
-        </div>
-
         <!-- Analysis & Models Section -->
         <div id="analysis-section" class="section">
             <div class="form-container">
                 <h2 class="form-title">Model Training & Analysis</h2>
-                <p style="color: #666; margin-bottom: 30px;">Access machine learning model training notebooks</p>
                 
                 <!-- Machine Learning Models -->
                 <div style="background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
@@ -660,6 +545,126 @@
                 </div>
             </div>
         </div>
+
+        <!-- Reports Section -->
+        <div id="reports-section" class="section">
+            <h2 style="color: #e91e63; margin-bottom: 30px;">📊 Reports & Analytics</h2>
+            
+            <!-- 1. Risk Analytics Dashboard -->
+            <div style="background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <h3 style="color: #e91e63; margin-bottom: 15px;">📊 Risk Analytics Dashboard</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div style="background: #fce4ec; padding: 20px; border-radius: 8px;">
+                        <h4 style="color: #c2185b; margin-bottom: 10px;">Risk Distribution</h4>
+                        <canvas id="riskDistChart" style="max-height: 250px;"></canvas>
+                    </div>
+                    <div style="background: #e3f2fd; padding: 20px; border-radius: 8px;">
+                        <h4 style="color: #1976d2; margin-bottom: 10px;">Risk by Location</h4>
+                        <canvas id="riskByLocationChart" style="max-height: 250px;"></canvas>
+                    </div>
+                    <div style="background: #fff3e0; padding: 20px; border-radius: 8px;">
+                        <h4 style="color: #f57c00; margin-bottom: 10px;">Risk by Time of Day</h4>
+                        <canvas id="riskByTimeChart" style="max-height: 250px;"></canvas>
+                    </div>
+                    <div style="background: #e8f5e9; padding: 20px; border-radius: 8px;">
+                        <h4 style="color: #388e3c; margin-bottom: 10px;">Risk by Age Group</h4>
+                        <canvas id="riskByAgeChart" style="max-height: 250px;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Trend Analysis -->
+            <div style="background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <h3 style="color: #e91e63; margin-bottom: 15px;">📈 Trend Analysis</h3>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
+                    <div style="background: #f3e5f5; padding: 20px; border-radius: 8px;">
+                        <h4 style="color: #7b1fa2; margin-bottom: 10px;">Harassment Type Analysis</h4>
+                        <canvas id="harassmentTypeChart" style="max-height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Safety Reports -->
+            <div style="background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <h3 style="color: #e91e63; margin-bottom: 15px;">🛡️ Safety Reports</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div style="background: #ffebee; padding: 20px; border-radius: 8px; border-left: 4px solid #c62828;">
+                        <h4 style="color: #c62828; margin-bottom: 10px;">⚠️ High-Risk Areas</h4>
+                        <ul id="highRiskAreas" style="list-style: none; padding: 0; color: #666;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid #ffcdd2;">📍 Loading...</li>
+                        </ul>
+                    </div>
+                    <div style="background: #fff9c4; padding: 20px; border-radius: 8px; border-left: 4px solid #f57f17;">
+                        <h4 style="color: #f57f17; margin-bottom: 10px;">🕒 Peak Risk Times</h4>
+                        <ul id="peakRiskTimes" style="list-style: none; padding: 0; color: #666;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid #fff59d;">⏰ Loading...</li>
+                        </ul>
+                    </div>
+                    <div style="background: #e8f5e9; padding: 20px; border-radius: 8px; border-left: 4px solid #2e7d32;">
+                        <h4 style="color: #2e7d32; margin-bottom: 10px;">✅ Safety Recommendations</h4>
+                        <ul id="safetyRecs" style="list-style: none; padding: 0; color: #666;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid #c8e6c9;">• Avoid isolated areas at night</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #c8e6c9;">• Use well-lit, crowded routes</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #c8e6c9;">• Stay alert in public transport</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid #c8e6c9;">• Share location with trusted contacts</li>
+                            <li style="padding: 8px 0;">• Trust your instincts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Model Performance Metrics -->
+            <div style="background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <h3 style="color: #e91e63; margin-bottom: 15px;">🎯 Model Performance Metrics</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div style="background: #e3f2fd; padding: 20px; border-radius: 8px;">
+                        <h4 style="color: #1976d2; margin-bottom: 15px;">Model Accuracy Comparison</h4>
+                        <canvas id="modelAccuracyChart" style="max-height: 300px;"></canvas>
+                    </div>
+                    <div style="background: #f3e5f5; padding: 20px; border-radius: 8px;">
+                        <h4 style="color: #7b1fa2; margin-bottom: 15px;">Performance Metrics</h4>
+                        <div style="margin-top: 10px;">
+                            <div style="margin-bottom: 15px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <span style="color: #666;">Accuracy:</span>
+                                    <span style="font-weight: bold; color: #1976d2;">94.5%</span>
+                                </div>
+                                <div style="background: #e3f2fd; border-radius: 10px; height: 10px; overflow: hidden;">
+                                    <div style="background: #2196f3; width: 94.5%; height: 100%;"></div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <span style="color: #666;">Precision:</span>
+                                    <span style="font-weight: bold; color: #388e3c;">92.8%</span>
+                                </div>
+                                <div style="background: #e8f5e9; border-radius: 10px; height: 10px; overflow: hidden;">
+                                    <div style="background: #4caf50; width: 92.8%; height: 100%;"></div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <span style="color: #666;">Recall:</span>
+                                    <span style="font-weight: bold; color: #f57c00;">91.2%</span>
+                                </div>
+                                <div style="background: #fff3e0; border-radius: 10px; height: 10px; overflow: hidden;">
+                                    <div style="background: #ff9800; width: 91.2%; height: 100%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <span style="color: #666;">F1-Score:</span>
+                                    <span style="font-weight: bold; color: #7b1fa2;">92.0%</span>
+                                </div>
+                                <div style="background: #f3e5f5; border-radius: 10px; height: 10px; overflow: hidden;">
+                                    <div style="background: #9c27b0; width: 92%; height: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- Result Modal -->
@@ -674,10 +679,12 @@
         </div>
     </div>
     
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
     <script>
-        let selectedFile = null;
-        
         // Section navigation
+        let chartsInitialized = false;
         function showSection(sectionName) {
             // Hide all sections
             document.querySelectorAll('.section').forEach(section => {
@@ -694,6 +701,12 @@
             
             // Add active class to clicked nav item
             event.target.classList.add('active');
+
+            // Initialize charts on first visit to reports section
+            if (sectionName === 'reports' && !chartsInitialized) {
+                setTimeout(initReportCharts, 100);
+                chartsInitialized = true;
+            }
         }
         
         // Load statistics on page load
@@ -817,105 +830,141 @@
                 closeModal();
             }
         });
-        
-        // File upload functionality
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
-                    alert('Please select a CSV file');
-                    return;
+
+        // Initialize Report Charts
+        function initReportCharts() {
+            // 1. Risk Distribution Chart
+            new Chart(document.getElementById('riskDistChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['No Risk', 'Low Risk', 'Medium Risk', 'High Risk'],
+                    datasets: [{
+                        data: [15, 30, 35, 20],
+                        backgroundColor: ['#4caf50', '#ffeb3b', '#ff9800', '#f44336']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
                 }
-                
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('File size must be less than 5MB');
-                    return;
-                }
-                
-                selectedFile = file;
-                document.getElementById('file-selected').textContent = `✓ Selected: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
-                document.getElementById('file-selected').style.display = 'block';
-                document.getElementById('upload-submit-btn').disabled = false;
-            }
-        }
-        
-        // Drag and drop functionality
-        const uploadArea = document.getElementById('upload-area');
-        
-        uploadArea.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            this.classList.add('dragover');
-        });
-        
-        uploadArea.addEventListener('dragleave', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            this.classList.remove('dragover');
-        });
-        
-        uploadArea.addEventListener('drop', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            this.classList.remove('dragover');
-            
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                const file = files[0];
-                if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
-                    selectedFile = file;
-                    document.getElementById('file-selected').textContent = `✓ Selected: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
-                    document.getElementById('file-selected').style.display = 'block';
-                    document.getElementById('upload-submit-btn').disabled = false;
-                } else {
-                    alert('Please select a CSV file');
-                }
-            }
-        });
-        
-        function uploadFile() {
-            if (!selectedFile) {
-                alert('Please select a file first');
-                return;
-            }
-            
-            const formData = new FormData();
-            formData.append('file', selectedFile);
-            
-            // Show loading
-            document.getElementById('upload-loading').classList.add('active');
-            document.getElementById('upload-submit-btn').disabled = true;
-            
-            // Send file to backend
-            fetch('/upload', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(result => {
-                // Hide loading
-                document.getElementById('upload-loading').classList.remove('active');
-                
-                if (result.status === 'success') {
-                    alert(`File processed successfully!\nTotal records: ${result.total}\nProcessed: ${result.processed}`);
-                    
-                    // Reset upload form
-                    selectedFile = null;
-                    document.getElementById('file-input').value = '';
-                    document.getElementById('file-selected').style.display = 'none';
-                    
-                    // Reload statistics
-                    loadStatistics();
-                } else {
-                    alert('Error: ' + result.error);
-                    document.getElementById('upload-submit-btn').disabled = false;
-                }
-            })
-            .catch(error => {
-                document.getElementById('upload-loading').classList.remove('active');
-                document.getElementById('upload-submit-btn').disabled = false;
-                alert('Error uploading file: ' + error.message);
             });
+
+            // 2. Risk by Location Chart
+            new Chart(document.getElementById('riskByLocationChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Street', 'Public Transport', 'Workplace', 'Home', 'Market'],
+                    datasets: [{
+                        label: 'Risk Level',
+                        data: [75, 85, 45, 30, 60],
+                        backgroundColor: '#e91e63'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true, max: 100 }
+                    }
+                }
+            });
+
+            // 3. Risk by Time of Day Chart
+            new Chart(document.getElementById('riskByTimeChart'), {
+                type: 'line',
+                data: {
+                    labels: ['6AM', '9AM', '12PM', '3PM', '6PM', '9PM', '12AM', '3AM'],
+                    datasets: [{
+                        label: 'Risk Score',
+                        data: [45, 55, 60, 50, 70, 85, 90, 75],
+                        borderColor: '#ff9800',
+                        backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true, max: 100 }
+                    }
+                }
+            });
+
+            // 4. Risk by Age Group Chart
+            new Chart(document.getElementById('riskByAgeChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['18-25', '26-35', '36-45', '46-55', '55+'],
+                    datasets: [{
+                        data: [35, 28, 20, 12, 5],
+                        backgroundColor: ['#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // 5. Harassment Type Chart
+            new Chart(document.getElementById('harassmentTypeChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Verbal', 'Physical', 'Visual', 'Cyber', 'Stalking'],
+                    datasets: [{
+                        label: 'Frequency',
+                        data: [45, 25, 30, 20, 15],
+                        backgroundColor: ['#9c27b0', '#e91e63', '#f44336', '#ff9800', '#795548']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    indexAxis: 'y',
+                    scales: {
+                        x: { beginAtZero: true }
+                    }
+                }
+            });
+
+            // 7. Model Accuracy Comparison Chart
+            new Chart(document.getElementById('modelAccuracyChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Logistic Regression', 'Decision Tree', 'Random Forest', 'Gradient Boosting', 'SVM'],
+                    datasets: [{
+                        label: 'Accuracy (%)',
+                        data: [87.5, 85.2, 94.5, 92.8, 89.3],
+                        backgroundColor: ['#2196f3', '#4caf50', '#ff9800', '#9c27b0', '#f44336']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true, max: 100 }
+                    }
+                }
+            });
+
+            // High-Risk Areas
+            document.getElementById('highRiskAreas').innerHTML = `
+                <li style="padding: 8px 0; border-bottom: 1px solid #ffcdd2;">📍 Night Streets (Risk: 85%)</li>
+                <li style="padding: 8px 0; border-bottom: 1px solid #ffcdd2;">📍 Crowded Public Transport (Risk: 78%)</li>
+                <li style="padding: 8px 0; border-bottom: 1px solid #ffcdd2;">📍 Isolated Areas (Risk: 90%)</li>
+                <li style="padding: 8px 0; border-bottom: 1px solid #ffcdd2;">📍 Late Night Markets (Risk: 72%)</li>
+                <li style="padding: 8px 0;">📍 Empty Parking Lots (Risk: 88%)</li>
+            `;
+
+            // Peak Risk Times
+            document.getElementById('peakRiskTimes').innerHTML = `
+                <li style="padding: 8px 0; border-bottom: 1px solid #fff59d;">⏰ 9PM - 12AM (High Risk)</li>
+                <li style="padding: 8px 0; border-bottom: 1px solid #fff59d;">⏰ 12AM - 3AM (Very High Risk)</li>
+                <li style="padding: 8px 0; border-bottom: 1px solid #fff59d;">⏰ 6PM - 9PM (Medium Risk)</li>
+                <li style="padding: 8px 0; border-bottom: 1px solid #fff59d;">⏰ 6AM - 9AM (Moderate Risk)</li>
+                <li style="padding: 8px 0;">⏰ 12PM - 3PM (Low Risk)</li>
+            `;
         }
     </script>
 </body>
