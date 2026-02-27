@@ -550,33 +550,14 @@
         <div id="reports-section" class="section">
             <h2 style="color: #e91e63; margin-bottom: 30px;">📊 Reports & Analytics</h2>
             
-            <!-- 1. Risk Analytics Dashboard -->
-            <div style="background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                <h3 style="color: #e91e63; margin-bottom: 15px;">📊 Risk Analytics Dashboard</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                    <div style="background: #fce4ec; padding: 20px; border-radius: 8px;">
-                        <h4 style="color: #c2185b; margin-bottom: 10px;">Risk Distribution</h4>
-                        <canvas id="riskDistChart" style="max-height: 250px;"></canvas>
-                    </div>
-                    <div style="background: #e3f2fd; padding: 20px; border-radius: 8px;">
-                        <h4 style="color: #1976d2; margin-bottom: 10px;">Risk by Location</h4>
-                        <canvas id="riskByLocationChart" style="max-height: 250px;"></canvas>
-                    </div>
-                    <div style="background: #fff3e0; padding: 20px; border-radius: 8px;">
-                        <h4 style="color: #f57c00; margin-bottom: 10px;">Risk by Time of Day</h4>
-                        <canvas id="riskByTimeChart" style="max-height: 250px;"></canvas>
-                    </div>
-                    <div style="background: #e8f5e9; padding: 20px; border-radius: 8px;">
-                        <h4 style="color: #388e3c; margin-bottom: 10px;">Risk by Age Group</h4>
-                        <canvas id="riskByAgeChart" style="max-height: 250px;"></canvas>
-                    </div>
-                </div>
-            </div>
-
             <!-- 2. Trend Analysis -->
             <div style="background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
                 <h3 style="color: #e91e63; margin-bottom: 15px;">📈 Trend Analysis</h3>
                 <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
+                    <div style="background: #e3f2fd; padding: 20px; border-radius: 8px;">
+                        <h4 style="color: #1976d2; margin-bottom: 10px;">Risk by Location</h4>
+                        <canvas id="riskByLocationChart" style="max-height: 300px;"></canvas>
+                    </div>
                     <div style="background: #f3e5f5; padding: 20px; border-radius: 8px;">
                         <h4 style="color: #7b1fa2; margin-bottom: 10px;">Harassment Type Analysis</h4>
                         <canvas id="harassmentTypeChart" style="max-height: 300px;"></canvas>
@@ -833,24 +814,6 @@
 
         // Initialize Report Charts
         function initReportCharts() {
-            // 1. Risk Distribution Chart
-            new Chart(document.getElementById('riskDistChart'), {
-                type: 'pie',
-                data: {
-                    labels: ['No Risk', 'Low Risk', 'Medium Risk', 'High Risk'],
-                    datasets: [{
-                        data: [15, 30, 35, 20],
-                        backgroundColor: ['#4caf50', '#ffeb3b', '#ff9800', '#f44336']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    }
-                }
-            });
-
             // 2. Risk by Location Chart
             new Chart(document.getElementById('riskByLocationChart'), {
                 type: 'bar',
@@ -866,45 +829,6 @@
                     responsive: true,
                     scales: {
                         y: { beginAtZero: true, max: 100 }
-                    }
-                }
-            });
-
-            // 3. Risk by Time of Day Chart
-            new Chart(document.getElementById('riskByTimeChart'), {
-                type: 'line',
-                data: {
-                    labels: ['6AM', '9AM', '12PM', '3PM', '6PM', '9PM', '12AM', '3AM'],
-                    datasets: [{
-                        label: 'Risk Score',
-                        data: [45, 55, 60, 50, 70, 85, 90, 75],
-                        borderColor: '#ff9800',
-                        backgroundColor: 'rgba(255, 152, 0, 0.1)',
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: { beginAtZero: true, max: 100 }
-                    }
-                }
-            });
-
-            // 4. Risk by Age Group Chart
-            new Chart(document.getElementById('riskByAgeChart'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['18-25', '26-35', '36-45', '46-55', '55+'],
-                    datasets: [{
-                        data: [35, 28, 20, 12, 5],
-                        backgroundColor: ['#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { position: 'bottom' }
                     }
                 }
             });
