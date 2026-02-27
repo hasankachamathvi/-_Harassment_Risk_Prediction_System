@@ -13,8 +13,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 app = Flask(__name__, 
-            template_folder='../frontend/templates',
-            static_folder='../frontend/static')
+            template_folder='frontend/templates',
+            static_folder='frontend/static')
 
 # Configuration for file uploads
 UPLOAD_FOLDER = 'uploads'
@@ -107,6 +107,29 @@ def predict():
         
         # Convert to DataFrame
         df = pd.DataFrame([data])
+        
+        # Add Timestamp column if not present (using a default value)
+        if 'Timestamp' not in df.columns:
+            df.insert(0, 'Timestamp', 0)  # Add Timestamp as first column
+        
+        # Ensure correct column order to match training data
+        expected_columns = [
+            'Timestamp',
+            '1. What is your age group?',
+            '2. What is your occupation?',
+            '3. At what time of day did the incident occur?',
+            '4. Where did the incident occur?',
+            '5. How crowded was the location at the time of the incident?',
+            '6. What was the lighting condition in the area?',
+            '7. Was any form of security present at the location?',
+            '8. Were you familiar with the area where the incident occurred?',
+            '9. What type of harassment did you experience?',
+            '10. How often have you experienced harassment in similar situations?',
+            '11. How safe did you feel during the incident?'
+        ]
+        
+        # Reorder columns to match expected order
+        df = df[expected_columns]
         
         # Apply label encoding if encoders are available
         if label_encoders:
@@ -532,6 +555,106 @@ def health():
         "message": "Women Risk Predictor API is running"
     }), 200
 
+@app.route('/notebooks/<notebook_name>')
+def serve_notebook(notebook_name):
+    """Serve notebook files"""
+    notebook_path = os.path.join('scripts', f'{notebook_name}.ipynb')
+    
+    if not os.path.exists(notebook_path):
+        return jsonify({
+            "error": f"Notebook '{notebook_name}' not found",
+            "status": "error"
+        }), 404
+    
+    # Return info about opening the notebook
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>{notebook_name.replace('_', ' ').title()}</title>
+        <style>
+            body {{
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                margin: 0;
+                padding: 20px;
+            }}
+            .container {{
+                background: white;
+                padding: 40px;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                text-align: center;
+                max-width: 600px;
+            }}
+            h1 {{
+                color: #e91e63;
+                margin-bottom: 20px;
+            }}
+            p {{
+                color: #666;
+                line-height: 1.6;
+                margin-bottom: 30px;
+            }}
+            .btn {{
+                display: inline-block;
+                padding: 12px 30px;
+                background: #e91e63;
+                color: white;
+                text-decoration: none;
+                border-radius: 8px;
+                font-weight: bold;
+                margin: 10px;
+                transition: background 0.3s;
+            }}
+            .btn:hover {{
+                background: #c2185b;
+            }}
+            .btn-secondary {{
+                background: #2196f3;
+            }}
+            .btn-secondary:hover {{
+                background: #1976d2;
+            }}
+            .path {{
+                background: #f5f5f5;
+                padding: 10px;
+                border-radius: 5px;
+                font-family: monospace;
+                margin: 20px 0;
+                word-break: break-all;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>📊 {notebook_name.replace('_', ' ').title()}</h1>
+            <p>This notebook contains the implementation for {notebook_name.replace('_', ' ')}.</p>
+            
+            <div class="path">
+                <strong>Notebook Path:</strong><br>
+                backend/scripts/{notebook_name}.ipynb
+            </div>
+            
+            <p>To open and run this notebook:</p>
+            <ol style="text-align: left; color: #666; line-height: 2;">
+                <li>Open Jupyter Notebook or JupyterLab</li>
+                <li>Navigate to the backend/scripts folder</li>
+                <li>Open {notebook_name}.ipynb</li>
+                <li>Run the cells to execute the analysis</li>
+            </ol>
+            
+            <a href="/dashboard" class="btn">← Back to Dashboard</a>
+            <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+        </div>
+    </body>
+    </html>
+    """
+
 def get_risk_message(prediction, probability=None):
     """Generate a message based on the risk prediction"""
     if prediction == 1:
@@ -578,6 +701,7 @@ if __name__ == "__main__":
     print("  POST /upload        - Upload CSV file for batch prediction")
     print("  GET  /api/statistics- Get statistics")
     print("  GET  /model_info    - Model information")
+    print("  GET  /notebooks/<name> - View notebook information")
     print("  GET  /health        - Health check")
     print("\nDashboard: http://127.0.0.1:5000/dashboard")
     print("=" * 60)

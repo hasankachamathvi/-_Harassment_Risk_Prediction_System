@@ -21,11 +21,11 @@ def run_script(script_name, description):
     script_path = os.path.join("scripts", script_name)
     
     if not os.path.exists(script_path):
-        print(f"❌ Error: Script '{script_path}' not found!")
+        print(f"Error: Script '{script_path}' not found!")
         return False
     
     try:
-        print(f"▶️  Running {script_name}...")
+        print(f"  Running {script_name}...")
         print("-" * 70)
         
         # Change to backend directory if not already there
@@ -44,14 +44,14 @@ def run_script(script_name, description):
         os.chdir(original_dir)
         
         if result.returncode == 0:
-            print("\n✅ Successfully completed!")
+            print("\n Successfully completed!")
             return True
         else:
-            print(f"\n❌ Script failed with return code {result.returncode}")
+            print(f"\n Script failed with return code {result.returncode}")
             return False
             
     except Exception as e:
-        print(f"\n❌ Error running script: {str(e)}")
+        print(f"\nError running script: {str(e)}")
         return False
 
 def check_dataset():
@@ -61,16 +61,16 @@ def check_dataset():
     dataset_path = "data/women_risk.csv"
     
     if os.path.exists(dataset_path):
-        print(f"✅ Dataset found at: {dataset_path}")
+        print(f" Dataset found at: {dataset_path}")
         
         # Get file size
         size = os.path.getsize(dataset_path)
         size_mb = size / (1024 * 1024)
-        print(f"📊 Dataset size: {size_mb:.2f} MB")
+        print(f" Dataset size: {size_mb:.2f} MB")
         
         return True
     else:
-        print(f"❌ Dataset not found at: {dataset_path}")
+        print(f" Dataset not found at: {dataset_path}")
         print("\nPlease ensure the dataset is placed at:")
         print(f"  {os.path.abspath(dataset_path)}")
         return False
@@ -87,7 +87,7 @@ def main():
     
     # Step 0: Check dataset
     if not check_dataset():
-        print("\n❌ Pipeline aborted: Dataset not found!")
+        print("\n Pipeline aborted: Dataset not found!")
         return
     
     # Pipeline steps
@@ -104,7 +104,7 @@ def main():
         results.append((description, success))
         
         if not success:
-            print("\n❌ Pipeline stopped due to error!")
+            print("\n Pipeline stopped due to error!")
             break
         
         time.sleep(1)  # Brief pause between steps
@@ -118,7 +118,7 @@ def main():
     print("Step Results:")
     print("-" * 70)
     for step, success in results:
-        status = "✅ PASSED" if success else "❌ FAILED"
+        status = "PASSED" if success else " FAILED"
         print(f"{status:12} | {step}")
     
     print("-" * 70)
@@ -133,9 +133,9 @@ def main():
     
     if passed_steps == total_steps:
         print("\n" + "=" * 70)
-        print("🎉 SUCCESS! All pipeline steps completed successfully!")
+        print(" SUCCESS! All pipeline steps completed successfully!")
         print("=" * 70)
-        print("\n📁 Generated files:")
+        print("\n Generated files:")
         print("   ✓ data/women_risk_cleaned.csv")
         print("   ✓ data/women_risk_processed.csv")
         print("   ✓ models/women_risk_model.pkl")
@@ -144,7 +144,7 @@ def main():
         print("   ✓ models/model_info.txt")
         print("   ✓ Visualizations in data/ folder")
         
-        print("\n🚀 Next Steps:")
+        print("\n Next Steps:")
         print("   1. Review the model performance metrics")
         print("   2. Check the generated visualizations")
         print("   3. Start the Flask API:")
@@ -152,7 +152,7 @@ def main():
         print("   4. Test predictions at http://127.0.0.1:5000")
         
     else:
-        print("\n❌ Pipeline completed with errors!")
+        print("\n Pipeline completed with errors!")
         print("Please check the error messages above and fix the issues.")
     
     print("\n")

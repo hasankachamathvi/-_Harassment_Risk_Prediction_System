@@ -203,6 +203,71 @@ The project trains and compares the following models:
 
 The best-performing model is selected and fine-tuned using GridSearchCV.
 
+## 🎯 Performance Analysis
+
+### Model Selection
+
+After training and comparing 5 different classification algorithms using 5-fold cross-validation, **Random Forest Classifier** emerged as the best-performing model.
+
+### Final Model Performance
+
+The optimized Random Forest model achieved the following metrics on the test set:
+
+| Metric | Score | Description |
+|--------|-------|-------------|
+| **Accuracy** | 91.30% | Overall correctness of predictions |
+| **Precision** | 100.00% | All predicted high-risk cases were correct |
+| **Recall** | 50.00% | Detected half of actual high-risk cases |
+| **F1-Score** | 66.67% | Harmonic mean of precision and recall |
+| **ROC-AUC** | 96.71% | Excellent discrimination capability |
+
+### Key Insights
+
+#### Strengths
+- **High Accuracy (91.3%)**: The model correctly predicts risk level in most cases
+- **Perfect Precision (100%)**: When the model predicts "High Risk", it's always right - critical for trust
+- **Excellent ROC-AUC (96.71%)**: Strong ability to distinguish between high and low risk scenarios
+
+#### Areas for Improvement
+- **Moderate Recall (50%)**: The model is conservative and misses some high-risk cases
+- This trade-off prioritizes avoiding false alarms over catching every case
+
+### Hyperparameter Optimization
+
+The model was fine-tuned using GridSearchCV with the following optimal parameters:
+
+```python
+{
+    'n_estimators': 100,
+    'max_depth': None,
+    'min_samples_split': 2,
+    'min_samples_leaf': 1
+}
+```
+
+### Dataset Statistics
+
+- **Total Samples**: 115
+- **Training Set**: 92 samples (80%)
+- **Test Set**: 23 samples (20%)
+- **Features**: 12 input features
+
+### Model Behavior
+
+The model demonstrates a **conservative prediction strategy**:
+- Prioritizes precision over recall
+- Minimizes false positives (false alarms)
+- Suitable for scenarios where false alarms should be minimized
+- 96.71% ROC-AUC indicates excellent discriminative ability when probability thresholds are adjusted
+
+### Recommendations for Deployment
+
+1. **Use probability scores** rather than binary predictions for nuanced risk assessment
+2. **Monitor model performance** regularly as new data becomes available
+3. **Consider threshold tuning** if higher recall is needed in production
+4. **Collect more data** to improve recall while maintaining precision
+5. **Feature importance analysis** can help identify key risk factors
+
 ## 📊 Evaluation Metrics
 
 The models are evaluated using:

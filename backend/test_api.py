@@ -31,12 +31,12 @@ def test_health():
         print_response(response)
         return response.status_code == 200
     except requests.exceptions.ConnectionError:
-        print("❌ Error: Could not connect to the API!")
+        print("Error: Could not connect to the API!")
         print("Please make sure the Flask server is running:")
         print("  python app.py")
         return False
     except Exception as e:
-        print(f"❌ Error: {str(e)}")
+        print(f" Error: {str(e)}")
         return False
 
 def test_model_info():
@@ -48,7 +48,7 @@ def test_model_info():
         print_response(response)
         return response.status_code == 200
     except Exception as e:
-        print(f"❌ Error: {str(e)}")
+        print(f" Error: {str(e)}")
         return False
 
 def test_single_prediction():
@@ -78,7 +78,7 @@ def test_single_prediction():
         print_response(response)
         return response.status_code == 200
     except Exception as e:
-        print(f"❌ Error: {str(e)}")
+        print(f" Error: {str(e)}")
         return False
 
 def test_batch_prediction():
@@ -128,7 +128,7 @@ def test_batch_prediction():
         print_response(response)
         return response.status_code == 200
     except Exception as e:
-        print(f"❌ Error: {str(e)}")
+        print(f" Error: {str(e)}")
         return False
 
 def test_invalid_endpoint():
@@ -140,7 +140,7 @@ def test_invalid_endpoint():
         print_response(response)
         return response.status_code == 404
     except Exception as e:
-        print(f"❌ Error: {str(e)}")
+        print(f" Error: {str(e)}")
         return False
 
 def main():
@@ -150,7 +150,7 @@ def main():
     print("║" + " " * 15 + "WOMEN RISK PREDICTOR API TESTING" + " " * 21 + "║")
     print("╚" + "═" * 68 + "╝")
     
-    print(f"\n🌐 API Base URL: {BASE_URL}")
+    print(f"\n API Base URL: {BASE_URL}")
     
     # Run tests
     tests = [
@@ -168,7 +168,7 @@ def main():
             success = test_func()
             results.append((test_name, success))
         except Exception as e:
-            print(f"❌ Test failed with exception: {str(e)}")
+            print(f" Test failed with exception: {str(e)}")
             results.append((test_name, False))
     
     # Summary
@@ -178,7 +178,7 @@ def main():
     print("-" * 70)
     
     for test_name, success in results:
-        status = "✅ PASSED" if success else "❌ FAILED"
+        status = " PASSED" if success else " FAILED"
         print(f"{test_name:<30} {status:<15}")
     
     print("-" * 70)
@@ -191,9 +191,9 @@ def main():
     print(f"Failed: {total_tests - passed_tests}")
     
     if passed_tests == total_tests:
-        print("\n✅ All tests passed!")
+        print("\n All tests passed!")
     else:
-        print("\n❌ Some tests failed. Please check the output above.")
+        print("\n Some tests failed. Please check the output above.")
     
     print("\n")
     
