@@ -764,6 +764,12 @@
                 document.getElementById('loading').classList.remove('active');
                 document.querySelector('.submit-btn').style.display = 'block';
                 
+                // Debug: Log the response from backend
+                console.log('Backend response:', result);
+                console.log('Risk label:', result.risk_label);
+                console.log('Risk value:', result.risk);
+                console.log('Probability:', result.probability);
+                
                 if (result.status === 'success') {
                     showResult(result);
                     // Reload statistics to update dashboard
@@ -783,6 +789,9 @@
         function showResult(result) {
             const modal = document.getElementById('result-modal');
             const riskElement = document.getElementById('risk-result');
+            
+            // Debug: Log the risk_label being processed
+            console.log('Processing risk_label in showResult:', result.risk_label);
             
             // Clear previous classes before applying new ones
             riskElement.className = 'risk-level';
@@ -804,6 +813,8 @@
                 riskText = 'High Risk';
                 riskClass = 'high-risk';
             }
+            
+            console.log('Assigned risk text:', riskText, 'with class:', riskClass);
             
             riskElement.textContent = riskText;
             riskElement.classList.add(riskClass);
